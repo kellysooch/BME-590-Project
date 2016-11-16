@@ -17,4 +17,3 @@ class BinaryReader:
         import numpy as np
         f = open(filename, 'rb')
         self.data = np.fromfile(f, 'uint16')
-
