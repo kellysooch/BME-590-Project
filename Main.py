@@ -2,6 +2,9 @@
 class Main:
 
     def __init__(self):
+        """ Initializer method for main. Creates the necessary parameters for other functions to access. Uses the
+        argparse parameters that the user inputs and assigns them to the proper variables.
+        """
         args = self.parse_arguments()
         self.JSONfile = args.JSONfile
         self.binfile = args.binfile
@@ -30,6 +33,13 @@ class Main:
         return args
 
     def read_data(self):
+        """
+        Uses the JSONReader and BinaryReader modules to read the RF binary data containing the samples and convert
+        to integers, and uses the parameters from the JSONReader to structure the data into separate beams.
+
+        :return: data_in_beams is the input data separated into its lateral beams
+        :rtype: int array
+        """
         from FileReader import JSONReader, BinaryReader
         jsreader = JSONReader(self.JSONfile)
         axial_samples = jsreader.axial_samples
