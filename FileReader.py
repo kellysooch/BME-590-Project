@@ -1,11 +1,20 @@
 class JSONReader:
 
-    def read_json(self):
-        return #class that is Metadata
+    def __init__(self, JSONfile):
+        import json
+        f = open(JSONfile)
+        data = json.load(f)
+
+        self.fs = data["fs"]
+        self.c = data["c"]
+        self.axial_samples = data["axial_samples"]
+        self.num_beams = data["num_beams"]
+        self.beam_spacing = data["beam_spacing"]
 
 class BinaryReader:
 
-    def read_binary(self):
+    def __init__(self, filename):
+        import numpy as np
         f = open(filename, 'rb')
-        data = np.fromfile(f,'uint16')
-        return data
+        self.data = np.fromfile(f, 'uint16')
+
