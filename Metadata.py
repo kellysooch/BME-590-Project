@@ -11,5 +11,3 @@ class Metadata:
 
     def get_c(self):
         return self.c
-
-# etc.
