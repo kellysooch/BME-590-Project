@@ -1,5 +1,5 @@
 def test_envelope_detect():
-    from SignalManipulator import envelope_detect
+    from SignalManipulator import get_pretty_signal
     from math import sin
 
     signal_start= 0
@@ -28,7 +28,7 @@ def test_envelope_detect():
 
     # asserting that the envelope is about constant due to multiplication of non-varying sines
     constant_envelope = positive_offset + f_s_amplitude * s_s_amplitude
-    for(point in envelope_detect(signal)):
+    for point in get_pretty_signal(signal)[0]:
         assert constant_envelope * (1 - margin_of_error) \
                <= point <= \
                constant_envelope * (1 + margin_of_error)
