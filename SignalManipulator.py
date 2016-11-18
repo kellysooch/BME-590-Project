@@ -21,7 +21,7 @@ def prepare_signals_for_rendering(multiple_beams):
         single_envelope = envelope_detect(rectified_signal, window_size)
         multiple_envelopes.append(single_envelope)
 
-    # apply log compression
+    multiple_envelopes = log_compress(multiple_envelopes)
     # apply compensation for distance
     # apply compensation for harmonic interactions
     return multiple_envelopes
@@ -89,11 +89,12 @@ def get_envelope_front_pad(rectified_signal, sample_window):
     :param sample_window: desired moving average window
     :return: missing points to pad the begging of the envelope detection points
     """
+    from math import ceil
     logging.debug('running get_envelope_front_pad function')
     front_pad = []
     current_avg = 0
 
-    for i in range(0, sample_window):
+    for i in range(0, ceil(sample_window/2)):
         logging.debug('current value of i is %d', i)
         current_avg *= i
         current_avg += rectified_signal[i]
@@ -113,4 +114,15 @@ def get_envelope_back_pad(rectified_signal, sample_window):
     :return: missing points to pad the end of the envelope detection points
     """
     logging.debug('running get_envelope_back_pad function')
-    return get_envelope_front_pad(rectified_signal[::-1], sample_window)[::-1]
+    return get_envelope_front_pad(rectified_signal[::-1], sample_window)[::-1][:-1]
+
+
+def log_compress(multiple_envelopes):
+    from math import log10
+
+    compressed_envelopes = []
+
+    for beam in multiple_envelopes:
+        compressed_envelopes.append([log10(point) for point in beam if point !=0])
+
+    return compressed_envelopes
