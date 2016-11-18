@@ -43,6 +43,9 @@ class Main:
         :rtype: int array
         """
         from FileReader import JSONReader, BinaryReader
+        import matplotlib.pyplot as plt
+        from math import log10
+
         jsreader = JSONReader(self.JSONfile)
         axial_samples = jsreader.axial_samples
         num_beams = jsreader.num_beams
@@ -53,7 +56,9 @@ class Main:
         for x in range(num_beams):
             beam = data[x*axial_samples:(x+1)*axial_samples]
             data_in_beams.append(beam)
+
         return data_in_beams
+
 
 if __name__ == "__main__":
     MyMain = Main()

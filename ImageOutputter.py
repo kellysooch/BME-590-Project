@@ -1,11 +1,21 @@
-class ImageOutputter:
 
-    def render_image(self):
-        # renders
+def make_image(data_in_beams, fs, c, axial_samples, num_beams, beam_spacing, do_save, do_display):
+    # manipulate axes
+    import numpy as np
+    import matplotlib.pyplot as plt
 
-    def save_image(self):
-        # saves
+    Matrix = np.zeros(num_beams, axial_samples)
+    for beam in data_in_beams:
+        for point in beam:
+            Matrix[beam.index()][point.index()] = point
 
-class ImageMaker:
+    X = np.linspace(0, beam_spacing*num_beams, num_beams)
+    Y = np.linspace(0, (axial_samples/fs)*c, axial_samples)
+    Z = Matrix
+    xx, yy = np.meshgrid(X, Y)
+    plt.pcolormesh(xx, yy, Z)
 
-    def make_image(self):
+    if do_save:
+        plt.savefig('image.png', format='png')
+    if do_display:
+        plt.show()
