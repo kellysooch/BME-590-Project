@@ -13,8 +13,8 @@ def prepare_signals_for_rendering(multiple_beams):
     logging.debug('running the get_pretty_signal function')
     multiple_envelopes = []
 
-    for single_beam in multiple_beams:
-        logging.debug('Running through a single beam signal')
+    for i, single_beam in enumerate(multiple_beams):
+        logging.debug('Running through single beam signal number %d', i)
         rectified_signal = abs(single_beam)
         window_size = determine_window_size(rectified_signal)
         logging.debug('window_size determined to to be %d', window_size)
@@ -35,7 +35,7 @@ def determine_window_size(rectified_signal):
     """
     logging.debug('running determine_window_size function')
     first_peak = first_peak_detect(rectified_signal, 1)
-    second_peak = first_peak_detect(rectified_signal, first_peak)
+    second_peak = first_peak_detect(rectified_signal, first_peak + 1)
     return (second_peak - first_peak) * WINDOW_MULTIPLIER
 
 
@@ -49,7 +49,8 @@ def first_peak_detect(beam, start_point):
     logging.debug('running first_peak_detect function')
     for i in range(start_point, len(beam)):
         logging.debug('current value of i is %d', i)
-        if beam[i-1] < beam[i] < beam[i+1]:
+        if beam[i-1] < beam[i] > beam[i+1]:
+            logging.debug('value determined to be the center of the values %d, %d, %d', beam[i-1], beam[i], beam[i+1])
             return i
 
 
@@ -71,7 +72,6 @@ def envelope_detect(rectified_signal, sample_window):
     envelope.append(average)
 
     for i in range(0, len(rectified_signal) - sample_window):
-        logging.debug('current value of i is %d', i)
         average -= rectified_signal[i] / sample_window
         average += rectified_signal[sample_window+i] / sample_window
         envelope.append(average)
@@ -113,4 +113,4 @@ def get_envelope_back_pad(rectified_signal, sample_window):
     :return: missing points to pad the end of the envelope detection points
     """
     logging.debug('running get_envelope_back_pad function')
-    return get_envelope_front_pad(rectified_signal.reverse(), sample_window).reverse()
+    return get_envelope_front_pad(rectified_signal[::-1], sample_window)[::-1]
