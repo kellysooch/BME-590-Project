@@ -43,7 +43,7 @@ class Main:
                          dest='do_save',
                          help='should the image be saved?',
                          type=bool,
-                         default=False)
+                         default=True)
 
         args = par.parse_args()
 
@@ -78,7 +78,7 @@ class Main:
 
 if __name__ == "__main__":
     logging.getLogger('ultrasound_kas100_fjm7')
-    logging.basicConfig(filename='log/log.txt', level=logging.DEBUG, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
+    logging.basicConfig(filename='log/log.txt', format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
     fo = open('log/log.txt', 'w+')  # clear the logging file
     fo.close()
     logging.debug('Starting project code')
