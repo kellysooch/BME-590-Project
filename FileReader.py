@@ -16,5 +16,5 @@ class BinaryReader:
     def __init__(self, filename):
         import numpy as np
         f = open(filename, 'rb')
-        self.data = np.fromfile(f, 'uint16')
+        self.data = np.fromfile(f, 'int16')
 
