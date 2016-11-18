@@ -1,6 +1,6 @@
 from SignalManipulator import prepare_signals_for_rendering
 from ImageOutputter import make_image
-
+import logging
 
 class Main:
 
@@ -37,7 +37,7 @@ class Main:
                          dest='do_display',
                          help='should the image be displayed?',
                          type=bool,
-                         default=False)
+                         default=True)
 
         par.add_argument('--save',
                          dest='do_save',
@@ -71,12 +71,17 @@ class Main:
             beam = data[x*axial_samples:(x+1)*axial_samples]
             data_in_beams.append(beam)
 
-        pyplot.plot(data_in_beams[20])
-        pyplot.show()
+        # pyplot.plot(data_in_beams[20])
+        # pyplot.show()
         return data_in_beams, jsreader
 
 
 if __name__ == "__main__":
+    logging.getLogger('ultrasound_kas100_fjm7')
+    logging.basicConfig(filename='log/log.txt', format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
+    fo = open('log/log.txt', 'w+')  # clear the logging file
+    fo.close()
+    logging.debug('Starting project code')
     MyMain = Main()
     data_in_beams, metadata = MyMain.read_data()
     prepared_data_in_beams = prepare_signals_for_rendering(data_in_beams)
