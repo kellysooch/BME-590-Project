@@ -22,10 +22,10 @@ def make_image(data_in_beams, fs, c, axial_samples, num_beams, beam_spacing, do_
     import matplotlib.pyplot as plt
 
     logging.debug('putting data into 2d array')
-    Matrix = np.zeros(num_beams, axial_samples)
+    Matrix = np.zeros(axial_samples, num_beams)
     for i, beam in enumerate(data_in_beams):
         for j,point in enumerate(beam):
-            Matrix[i][j] = point
+            Matrix[j][i] = point
 
     logging.debug('setting axes, x=Lateral, y=Axial')
     X = np.linspace(0, beam_spacing*num_beams, num_beams)
