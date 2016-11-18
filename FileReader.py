@@ -1,3 +1,6 @@
+import logging
+logging.getLogger('ultrasound_kas100_fjm7')
+
 class JSONReader:
 
     def __init__(self, JSONfile):
@@ -12,6 +15,7 @@ class JSONReader:
         f = open(JSONfile)
         data = json.load(f)
 
+        logging.debug('reading in JSON file')
         self.fs = data["fs"]
         self.c = data["c"]
         self.axial_samples = data["axial_samples"]
@@ -28,5 +32,6 @@ class BinaryReader:
         :type filename: str
         """
         import numpy as np
+        logging.debug('reading in binary data')
         f = open(filename, 'rb')
-        self.data = np.fromfile(f, 'uint16')
+        self.data = np.fromfile(f, 'int16')
