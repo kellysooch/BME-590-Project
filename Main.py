@@ -1,3 +1,5 @@
+from SignalManipulator import prepare_signals_for_rendering
+
 
 class Main:
 
@@ -55,8 +57,8 @@ class Main:
 
 if __name__ == "__main__":
     MyMain = Main()
-    MyMain.read_data()
-    # read data
+    data_in_beams = MyMain.read_data()
+    prepare_signals_for_rendering(data_in_beams)
     # pretty up the data
     # make image
     # render / save
