@@ -1,12 +1,5 @@
 
-def readjson(filename):
-    import json
-    f = open(filename)
-    data = json.load(f)
-    fs = data["fs"]
-    c = data["c"]
-    return fs, c
-
-def test_function():
+def test_read_json():
+    from FileReader import JSONReader
     import numpy as np
-    assert np.all(readjson("bmode.json")) == np.all([40000000, 1540])
+    assert JSONReader("bmode.json").fs == 40000000
