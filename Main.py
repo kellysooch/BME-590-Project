@@ -1,4 +1,5 @@
 from SignalManipulator import prepare_signals_for_rendering
+from ImageOutputter import make_image
 
 
 class Main:
@@ -10,6 +11,8 @@ class Main:
         args = self.parse_arguments()
         self.JSONfile = args.JSONfile
         self.binfile = args.binfile
+        self.do_save = args.do_save
+        self.do_display = args.do_display
 
     @staticmethod
     def parse_arguments():
@@ -30,6 +33,18 @@ class Main:
                          type = str,
                          default = 'rfdat.bin')
 
+        par.add_argument('--display',
+                         dest='do_display',
+                         help='should the image be displayed?',
+                         type=bool,
+                         default=False)
+
+        par.add_argument('--save',
+                         dest='do_save',
+                         help='should the image be saved?',
+                         type=bool,
+                         default=True)
+
         args = par.parse_args()
 
         return args
@@ -43,8 +58,7 @@ class Main:
         :rtype: int array
         """
         from FileReader import JSONReader, BinaryReader
-        import matplotlib.pyplot as plt
-        from math import log10
+        from matplotlib import pyplot
 
         jsreader = JSONReader(self.JSONfile)
         axial_samples = jsreader.axial_samples
@@ -57,13 +71,15 @@ class Main:
             beam = data[x*axial_samples:(x+1)*axial_samples]
             data_in_beams.append(beam)
 
-        return data_in_beams
+        pyplot.plot(data_in_beams[20])
+        pyplot.show()
+        return data_in_beams, jsreader
 
 
 if __name__ == "__main__":
     MyMain = Main()
-    data_in_beams = MyMain.read_data()
-    prepare_signals_for_rendering(data_in_beams)
-    # pretty up the data
-    # make image
-    # render / save
+    data_in_beams, metadata = MyMain.read_data()
+    prepared_data_in_beams = prepare_signals_for_rendering(data_in_beams)
+    make_image(prepared_data_in_beams,
+               metadata.fs, metadata.c, metadata.axial_samples, metadata.num_beams, metadata.beam_spacing,
+               MyMain.do_save, MyMain.do_display)

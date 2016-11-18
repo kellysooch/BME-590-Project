@@ -1,6 +1,7 @@
 import logging
 logging.getLogger('ultrasound_kas100_fjm7')
 
+WINDOW_MULTIPLIER = 2
 
 def prepare_signals_for_rendering(multiple_beams):
     """ Manipulates the given multiple beams to perform envelope detection and otherwise manipulate the signal to be
@@ -35,7 +36,7 @@ def determine_window_size(rectified_signal):
     logging.debug('running determine_window_size function')
     first_peak = first_peak_detect(rectified_signal, 1)
     second_peak = first_peak_detect(rectified_signal, first_peak)
-    return second_peak - first_peak
+    return (second_peak - first_peak) * WINDOW_MULTIPLIER
 
 
 def first_peak_detect(beam, start_point):
