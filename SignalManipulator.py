@@ -2,7 +2,7 @@ import logging
 logging.getLogger('ultrasound_kas100_fjm7')
 
 
-def get_pretty_signal(multiple_beams):
+def prepare_signals_for_rendering(multiple_beams):
     """ Manipulates the given multiple beams to perform envelope detection and otherwise manipulate the signal to be
     in a form which the display may take to display in the best form possible
 
