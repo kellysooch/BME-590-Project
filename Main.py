@@ -94,4 +94,4 @@ if __name__ == "__main__":
     prepared_data_in_beams = prepare_signals_for_rendering(data_in_beams)
     make_image(prepared_data_in_beams,
                metadata.fs, metadata.c, metadata.axial_samples, metadata.num_beams, metadata.beam_spacing,
-               MyMain.do_save, MyMain.do_display, MyMain.image_name)
+               MyMain.image_name, MyMain.do_save, MyMain.do_display)

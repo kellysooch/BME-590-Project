@@ -2,7 +2,7 @@ import logging
 logging.getLogger('ultrasound_kas100_fjm7')
 
 
-def make_image(data_in_beams, fs, c, axial_samples, num_beams, beam_spacing, do_save, do_display, image_name):
+def make_image(data_in_beams, fs, c, axial_samples, num_beams, beam_spacing, image_name, do_save, do_display):
     """
     Creates Ultrasound image using pcolormesh, taking as inputs the data in beams and the parameters from the JSON file,
     as well as allowing the user to specify whether they want to save, display, or save and display image. The function
@@ -42,7 +42,8 @@ def make_image(data_in_beams, fs, c, axial_samples, num_beams, beam_spacing, do_
 
     if do_save:
         logging.debug('saving image')
-        plt.savefig('image_name', format='png')
+        image = plt.savefig(image_name, format='png')
     if do_display:
         logging.debug('displaying image')
         plt.show()
+    return image
