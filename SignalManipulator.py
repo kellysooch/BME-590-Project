@@ -1,4 +1,5 @@
 import logging
+from sys import exit
 logging.getLogger('ultrasound_kas100_fjm7')
 
 WINDOW_MULTIPLIER = 2
@@ -11,7 +12,7 @@ def prepare_signals_for_rendering(multiple_beams):
     :param multiple_beams: data as list of list of data points
     :return: list of list of data points. Now in desired manipulated form
     """
-    logging.debug('running the get_pretty_signal function')
+    logging.debug('running the prepare_signals_for_rendering function')
     multiple_envelopes = []
 
     for i, single_beam in enumerate(multiple_beams):
@@ -54,6 +55,9 @@ def first_peak_detect(beam, start_point):
             logging.debug('value determined to be the center of the values %d, %d, %d', beam[i-1], beam[i], beam[i+1])
             return i
 
+    logging.error("no peak was found. will try working with the length of the beam")
+    return len(beam)
+
 
 def envelope_detect(rectified_signal, sample_window):
     """ Applies a moving average to the given signal. This is effectively a low-pass filter.
@@ -68,7 +72,11 @@ def envelope_detect(rectified_signal, sample_window):
     for data in rectified_signal[:sample_window]:
         first_total += data
 
-    average = first_total / sample_window
+    try:
+        average = first_total / sample_window
+    except ZeroDivisionError:
+        logging.error("sample window was somehow calculated to be zero")
+        exit("sample window was zero. Must be error in calculating window")
 
     envelope.append(average)
 
@@ -136,8 +144,13 @@ def log_compress(multiple_envelopes):
 
     compressed_envelopes = []
     logging.debug('compressing data')
+
     for beam in multiple_envelopes:
-        compressed_envelopes.append([log10(point) for point in beam if point != 0])  # do not take log if zero
+        try:
+            compressed_envelopes.append([log10(point) for point in beam if point != 0])  # do not take log if zero
+        except ValueError:
+            logging.error("somehow there are negative values in the beam")
+            exit("incorrect information flow in the project. Should be not negative values")
 
     return compressed_envelopes
 
@@ -156,6 +169,6 @@ def account_for_distance(compressed_envelopes):
     for beam in compressed_envelopes:
         x = np.linspace(0, len(beam), len(beam))
         y = np.sqrt(x)
-        amplified_signal.append(y*beam)
+        amplified_signal.append(y * beam)
 
     return amplified_signal
