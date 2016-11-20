@@ -129,7 +129,7 @@ def log_compress(multiple_envelopes):
     from math import log10
 
     compressed_envelopes = []
-
+    logging.debug('compressing data')
     for beam in multiple_envelopes:
         compressed_envelopes.append([log10(point) for point in beam if point !=0])
 
@@ -145,6 +145,7 @@ def account_for_distance(compressed_envelopes):
     import numpy as np
 
     amplified_signal = []
+    logging.debug('amplifying data to account for distance')
     for beam in compressed_envelopes:
         x = np.linspace(0, len(beam), len(beam))
         y = np.sqrt(x)

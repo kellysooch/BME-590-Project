@@ -13,6 +13,7 @@ class Main:
         self.binfile = args.binfile
         self.do_save = args.do_save
         self.do_display = args.do_display
+        self.image_name = args.image_name
 
     @staticmethod
     def parse_arguments():
@@ -28,10 +29,10 @@ class Main:
                          default='bmode.json')
 
         par.add_argument('--binfile',
-                         dest = 'binfile',
+                         dest='binfile',
                          help='filename of binary data',
-                         type = str,
-                         default = 'rfdat.bin')
+                         type=str,
+                         default='rfdat.bin')
 
         par.add_argument('--display',
                          dest='do_display',
@@ -44,6 +45,12 @@ class Main:
                          help='should the image be saved?',
                          type=bool,
                          default=True)
+
+        par.add_argument('--image',
+                         dest='image_name',
+                         help='desired filename of B-mode image',
+                         type=str,
+                         default='bmode.png')
 
         args = par.parse_args()
 
@@ -87,4 +94,4 @@ if __name__ == "__main__":
     prepared_data_in_beams = prepare_signals_for_rendering(data_in_beams)
     make_image(prepared_data_in_beams,
                metadata.fs, metadata.c, metadata.axial_samples, metadata.num_beams, metadata.beam_spacing,
-               MyMain.do_save, MyMain.do_display)
+               MyMain.do_save, MyMain.do_display, MyMain.image_name)
