@@ -3,6 +3,7 @@ logging.getLogger('ultrasound_kas100_fjm7')
 
 WINDOW_MULTIPLIER = 2
 
+
 def prepare_signals_for_rendering(multiple_beams):
     """ Manipulates the given multiple beams to perform envelope detection and otherwise manipulate the signal to be
     in a form which the display may take to display in the best form possible
@@ -89,12 +90,12 @@ def get_envelope_front_pad(rectified_signal, sample_window):
     :param sample_window: desired moving average window
     :return: missing points to pad the begging of the envelope detection points
     """
-    from math import ceil
+    from math import floor
     logging.debug('running get_envelope_front_pad function')
     front_pad = []
     current_avg = 0
 
-    for i in range(0, ceil(sample_window/2)):
+    for i in range(0, floor(sample_window/2)):  # floor because need to ensure have more in the front
         logging.debug('current value of i is %d', i)
         current_avg *= i
         current_avg += rectified_signal[i]
@@ -114,7 +115,12 @@ def get_envelope_back_pad(rectified_signal, sample_window):
     :return: missing points to pad the end of the envelope detection points
     """
     logging.debug('running get_envelope_back_pad function')
-    return get_envelope_front_pad(rectified_signal[::-1], sample_window)[::-1][:-1]
+    back_pad = get_envelope_front_pad(rectified_signal[::-1], sample_window)[::-1]
+
+    if sample_window % 2 == 1:  # if odd, then the paddings are equal
+        return back_pad
+    else:
+        return back_pad[:-1]
 
 
 def log_compress(multiple_envelopes):
@@ -123,6 +129,6 @@ def log_compress(multiple_envelopes):
     compressed_envelopes = []
 
     for beam in multiple_envelopes:
-        compressed_envelopes.append([log10(point) for point in beam if point !=0])
+        compressed_envelopes.append([log10(point) for point in beam if point != 0])  # do not take log if zero
 
     return compressed_envelopes

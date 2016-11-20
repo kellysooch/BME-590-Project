@@ -58,7 +58,7 @@ class Main:
         :rtype: int array
         """
         from FileReader import JSONReader, BinaryReader
-        from matplotlib import pyplot
+        # from matplotlib import pyplot
 
         jsreader = JSONReader(self.JSONfile)
         axial_samples = jsreader.axial_samples

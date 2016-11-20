@@ -1,0 +1,7 @@
+{
+  "Test_SignalManipulator.py::test_determine_window_size": true,
+  "Test_SignalManipulator.py::test_envelope_detect": true,
+  "Test_SignalManipulator.py::test_first_peak_detection": true,
+  "Test_SignalManipulator.py::test_get_envelope_pad": true,
+  "Test_SignalManipulator.py::test_log_compress": true
+}
