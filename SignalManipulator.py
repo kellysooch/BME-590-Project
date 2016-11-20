@@ -23,7 +23,7 @@ def prepare_signals_for_rendering(multiple_beams):
         multiple_envelopes.append(single_envelope)
 
     multiple_envelopes = log_compress(multiple_envelopes)
-    # apply compensation for distance
+    multiple_envelopes = account_for_distance(multiple_envelopes)
     # apply compensation for harmonic interactions
     return multiple_envelopes
 
@@ -124,11 +124,38 @@ def get_envelope_back_pad(rectified_signal, sample_window):
 
 
 def log_compress(multiple_envelopes):
+    """ Applies logarithmic compression to the signal. Takes the log of each point in each beam as long as the
+    point is not equal to zero.
+
+    :param multiple_envelopes: list of list of data points in manipulated envelope detected form
+    :type multiple_envelopes: int array
+    :return: list of list of data points, now compressed
+    :rtype: int array
+    """
     from math import log10
 
     compressed_envelopes = []
-
+    logging.debug('compressing data')
     for beam in multiple_envelopes:
         compressed_envelopes.append([log10(point) for point in beam if point != 0])  # do not take log if zero
 
     return compressed_envelopes
+
+
+def account_for_distance(compressed_envelopes):
+    """ Applies signal to scale the data as the axial depth increases
+
+    :param compressed_envelopes: list of list of data points that are compressed
+    :type compressed_envelopes: int array
+    :return: list of list of data points, now amplified to account for axial distance
+    """
+    import numpy as np
+
+    amplified_signal = []
+    logging.debug('amplifying data to account for distance')
+    for beam in compressed_envelopes:
+        x = np.linspace(0, len(beam), len(beam))
+        y = np.sqrt(x)
+        amplified_signal.append(y*beam)
+
+    return amplified_signal
