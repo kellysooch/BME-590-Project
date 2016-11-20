@@ -30,6 +30,7 @@ def make_image(data_in_beams, fs, c, axial_samples, num_beams, beam_spacing, do_
         for j, point in enumerate(beam):
             Matrix[len(beam) - 1 - j][len(data_in_beams) - 1 - i] = point
     logging.debug('setting axes, x=Lateral, y=Axial')
+
     X = np.linspace(0, beam_spacing*num_beams, num_beams)
     Y = np.linspace(0, (axial_samples/fs)*c, axial_samples)
     Z = Matrix
@@ -44,4 +45,3 @@ def make_image(data_in_beams, fs, c, axial_samples, num_beams, beam_spacing, do_
     if do_display:
         logging.debug('displaying image')
         plt.show()
-
