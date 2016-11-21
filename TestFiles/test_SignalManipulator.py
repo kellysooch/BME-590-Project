@@ -62,10 +62,16 @@ def test_log_compress():
 
 
 def test_account_for_distance():
-    """ Know that accounting for distance is a quadratic scaling. So use squares for test
-    :return:
+    """test that multiplying the square root of the data by the data results in a correct amplified
+    signal
     """
     from SignalManipulator import account_for_distance
+    import numpy as np
 
-    signal = [1, 1, 1, 1, 1]
-    assert account_for_distance(signal) == [1, 4, 9, 16, 25]
+    test_data = [[1, 4, 9],[1,4,9]]
+    new_data = [[1*np.sqrt(1), 4*np.sqrt(2), 9*np.sqrt(3)], [1*np.sqrt(1), 4*np.sqrt(2), 9*np.sqrt(3)]]
+
+    assert np.all(account_for_distance(test_data)) == np.all(new_data)
+
+    signal = [[1, 1, 1, 1, 1]]
+    assert np.all(account_for_distance(signal)) == np.all([[1, 4, 9, 16, 25]])
