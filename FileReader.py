@@ -1,5 +1,7 @@
 import logging
+from sys import exit
 logging.getLogger('ultrasound_kas100_fjm7')
+
 
 class JSONReader:
 
@@ -12,15 +14,25 @@ class JSONReader:
 
         """
         import json
-        f = open(JSONfile)
+        try:
+            f = open(JSONfile)
+        except FileNotFoundError:
+            logging.error('The JSON file of that name does not exist')
+            exit('No such JSON file')
+
         data = json.load(f)
 
         logging.debug('reading in JSON file')
-        self.fs = data["fs"]
-        self.c = data["c"]
-        self.axial_samples = data["axial_samples"]
-        self.num_beams = data["num_beams"]
-        self.beam_spacing = data["beam_spacing"]
+        try:
+            self.fs = data["fs"]
+            self.c = data["c"]
+            self.axial_samples = data["axial_samples"]
+            self.num_beams = data["num_beams"]
+            self.beam_spacing = data["beam_spacing"]
+        except KeyError:
+            logging.error('The data specified in the JSON file is incomplete')
+            exit('JSON file is incomplete')
+
 
 class BinaryReader:
 
@@ -33,5 +45,10 @@ class BinaryReader:
         """
         import numpy as np
         logging.debug('reading in binary data')
-        f = open(filename, 'rb')
+        try:
+            f = open(filename, 'rb')
+        except FileNotFoundError:
+            logging.error('binary file was not found')
+            exit('no such binary file')
+
         self.data = np.fromfile(f, 'int16')
