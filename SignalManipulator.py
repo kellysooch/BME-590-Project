@@ -25,7 +25,8 @@ def prepare_signals_for_rendering(multiple_beams):
 
     multiple_envelopes = log_compress(multiple_envelopes)
     multiple_envelopes = account_for_distance(multiple_envelopes)
-    # apply compensation for harmonic interactions
+    multiple_envelopes = account_for_harmonics(multiple_envelopes)
+
     return multiple_envelopes
 
 
@@ -172,3 +173,20 @@ def account_for_distance(compressed_envelopes):
         amplified_signal.append(y * beam)
 
     return amplified_signal
+
+def account_for_harmonics(amplified_signal):
+    """ Multiplies data by gaussian function to account for harmonics
+    :param amplified_signal: list of list of data points that have time gain compensation
+    :type amplified_signal: int array
+    :return: list of list of data points, now accounted for harmonics
+    """
+    import numpy as np
+    signal = []
+    mu = 3
+    sig = 6
+    logging.debug('applying bell curve to account for harmonics')
+    for beam in amplified_signal:
+        x = np.linspace(-0.015, 0.015, len(beam))
+        gaussian = np.exp(-np.power(x - mu, 2) / (2 * np.power(sig, 2)))
+        signal.append(beam * gaussian)
+    return signal
