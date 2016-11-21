@@ -59,4 +59,15 @@ def test_log_compress():
     assert result[2] == [2]
     assert result[3] == [3]
 
+def test_account_for_distance():
+    """test that multiplying the square root of the data by the data results in a correct amplified
+    signal
+    """
+    from SignalManipulator import account_for_distance
+    import numpy as np
+
+    test_data = [[1, 4, 9],[1,4,9]]
+    new_data = [[1*np.sqrt(1), 4*np.sqrt(2), 9*np.sqrt(3)], [1*np.sqrt(1), 4*np.sqrt(2), 9*np.sqrt(3)]]
+
+    assert np.all(account_for_distance(test_data)) == np.all(new_data)
 
