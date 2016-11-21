@@ -14,17 +14,36 @@ Contents:
 Code Modules:
 =============
 
+Main:
++++++
 .. automodule:: Main
-	:members: Main.__init__, read_data
+	:members: 
 
+.. autoclass:: Main
+	:members: __init__, read_data
+
+File Reader:
+++++++++++++
 .. automodule:: FileReader
-	:members: JSONReader.__init__, BinaryReader.__init__
+    :members: JSONReader, BinaryReader
+
+.. autoclass:: JSONReader
+    :members: __init__
+
+.. autoclass:: BinaryReader
+    :members: __init__
+
+Signal Manipulator:
++++++++++++++++++++
 
 .. automodule:: SignalManipulator
 	:members: 
 
+Image Outputter:
+++++++++++++++++
 .. automodule:: ImageOutputter
 	:members:
+
 
 Indices and tables
 ==================

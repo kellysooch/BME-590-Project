@@ -1,8 +1,6 @@
-from ImageOutputter import make_image
-import os
-
-
 def test_save_image():
+    from ImageOutputter import make_image
+    import os
 
     data_in_beams = [[0, 0, 0], [1, 1, 1], [0, 0, 0], [1, 1, 1]]
     fs = 1
