@@ -75,3 +75,19 @@ def test_account_for_distance():
 
     signal = [[1, 1, 1, 1, 1]]
     assert np.all(account_for_distance(signal)) == np.all([[1, 4, 9, 16, 25]])
+
+
+def test_account_for_harmonics():
+    """test that multiplies signal by a bell curve to account for harmonics
+    """
+    from SignalManipulator import account_for_harmonics
+    import numpy as np
+
+    test_data = [[1,1,1], [1,1,1]]
+    x = np.linspace(-0.015, 0.015, 3)
+    mu = 3
+    sig = 6
+    new_data = [[np.exp(-np.power(x - mu, 2) / (2 * np.power(sig, 2)))],
+                [np.exp(-np.power(x - mu, 2) / (2 * np.power(sig, 2)))]]
+
+    assert np.all(account_for_harmonics(test_data)) == np.all(new_data)
