@@ -2,7 +2,8 @@ import logging
 logging.getLogger('ultrasound_kas100_fjm7')
 
 
-def make_image(data_in_beams, fs, c, axial_samples, num_beams, beam_spacing, image_name, do_save, do_display):
+def make_image(data_in_beams, fs, c, axial_samples, num_beams, beam_spacing, image_name, do_save, do_display,
+               test=False):
     """
     Creates Ultrasound image using pcolormesh, taking as inputs the data in beams and the parameters from the JSON file,
     as well as allowing the user to specify whether they want to save, display, or save and display image. The function
@@ -18,9 +19,14 @@ def make_image(data_in_beams, fs, c, axial_samples, num_beams, beam_spacing, ima
     :param do_save: Boolean logic if user wants to save image to png, default=True
     :param do_display: Boolean logic if user wants to display image, default=True
     :param image_name: filename of B-mode png image, default=bmode.png
+    :param test: optional flag to decide to use the Agg backend of matplotlib
     :return: a displayed and/or saved image
     """
     import numpy as np
+    if test:
+        import matplotlib
+        matplotlib.use('Agg')
+
     import matplotlib.pyplot as plt
     from skimage import exposure
 

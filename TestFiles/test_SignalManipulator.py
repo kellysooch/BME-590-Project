@@ -41,6 +41,7 @@ def test_get_envelope_pad():
 
     assert back_padding[::-1] == front_padding
 
+
 def test_log_compress():
     """ log_compress uses base 10 log compression. Exploit that to ensure it is correct
     """
@@ -59,6 +60,7 @@ def test_log_compress():
     assert result[2] == [2]
     assert result[3] == [3]
 
+
 def test_account_for_distance():
     """test that multiplying the square root of the data by the data results in a correct amplified
     signal
@@ -70,6 +72,10 @@ def test_account_for_distance():
     new_data = [[1*np.sqrt(1), 4*np.sqrt(2), 9*np.sqrt(3)], [1*np.sqrt(1), 4*np.sqrt(2), 9*np.sqrt(3)]]
 
     assert np.all(account_for_distance(test_data)) == np.all(new_data)
+
+    signal = [[1, 1, 1, 1, 1]]
+    assert np.all(account_for_distance(signal)) == np.all([[1, 4, 9, 16, 25]])
+
 
 def test_account_for_harmonics():
     """test that multiplies signal by a bell curve to account for harmonics
