@@ -24,26 +24,27 @@ def make_image(data_in_beams, fs, c, axial_samples, num_beams, beam_spacing, ima
     import matplotlib.pyplot as plt
 
     logging.debug('putting data into 2d array')
-    Matrix = np.zeros((axial_samples, num_beams))
+    matrix = np.zeros((axial_samples, num_beams))
     logging.debug('num_beams = %d\n axial_samples = %d\n length of beams = %d\n length of samples = %d',
                   num_beams, axial_samples, len(data_in_beams), len(data_in_beams[0]))
     for i, beam in enumerate(data_in_beams):
         for j, point in enumerate(beam):
-            Matrix[len(beam) - 1 - j][len(data_in_beams) - 1 - i] = point
+            matrix[len(beam) - 1 - j][len(data_in_beams) - 1 - i] = point
     logging.debug('setting axes, x=Lateral, y=Axial')
 
     X = np.linspace(0, beam_spacing*num_beams, num_beams)
     Y = np.linspace(0, (axial_samples/fs)*c, axial_samples)
-    Z = Matrix
+    Z = matrix
 
     logging.debug('creating Ultrasound image with pcolormesh')
     xx, yy = np.meshgrid(X, Y)
     plt.pcolormesh(xx, yy, Z, cmap="gray")
+    plt.ylabel("Axial distance (meters)")
+    plt.xlabel("Lateral distance (meters)")
 
     if do_save:
         logging.debug('saving image')
-        image = plt.savefig(image_name, format='png')
+        plt.savefig(image_name, format='png')
     if do_display:
         logging.debug('displaying image')
         plt.show()
-    return image

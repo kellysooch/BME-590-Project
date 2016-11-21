@@ -2,6 +2,7 @@ from SignalManipulator import prepare_signals_for_rendering
 from ImageOutputter import make_image
 import logging
 
+
 class Main:
 
     def __init__(self):
