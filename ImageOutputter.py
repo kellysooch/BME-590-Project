@@ -28,7 +28,6 @@ def make_image(data_in_beams, fs, c, axial_samples, num_beams, beam_spacing, ima
         matplotlib.use('Agg')
 
     import matplotlib.pyplot as plt
-    from skimage import exposure
 
     logging.debug('putting data into 2d array')
     matrix = np.zeros((axial_samples, num_beams))
