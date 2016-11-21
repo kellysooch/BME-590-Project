@@ -10,7 +10,7 @@ def test_save_image():
     beam_spacing = 0.01
     image_name = 'test.png'
 
-    make_image(data_in_beams, fs, c, axial_samples, num_beams, beam_spacing,image_name, do_save=True,
-                       do_display=False)
+    make_image(data_in_beams, fs, c, axial_samples, num_beams, beam_spacing,image_name, do_save=True, do_display=False,
+               test=True)
 
     assert os.path.isfile('test.png') is True
