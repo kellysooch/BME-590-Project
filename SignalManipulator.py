@@ -154,7 +154,7 @@ def account_for_distance(compressed_envelopes):
     amplified_signal = []
     logging.debug('amplifying data to account for distance')
     for beam in compressed_envelopes:
-        x = np.linspace(0, len(beam), len(beam))
+        x = np.linspace(1, len(beam), len(beam))
         y = np.sqrt(x)
         amplified_signal.append(y*beam)
 

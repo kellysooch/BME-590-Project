@@ -65,7 +65,6 @@ class Main:
         :rtype: int array
         """
         from FileReader import JSONReader, BinaryReader
-        # from matplotlib import pyplot
 
         jsreader = JSONReader(self.JSONfile)
         axial_samples = jsreader.axial_samples
@@ -78,8 +77,6 @@ class Main:
             beam = data[x*axial_samples:(x+1)*axial_samples]
             data_in_beams.append(beam)
 
-        # pyplot.plot(data_in_beams[20])
-        # pyplot.show()
         return data_in_beams, jsreader
 
 
