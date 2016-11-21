@@ -41,6 +41,7 @@ def test_get_envelope_pad():
 
     assert back_padding[::-1] == front_padding
 
+
 def test_log_compress():
     """ log_compress uses base 10 log compression. Exploit that to ensure it is correct
     """
@@ -60,3 +61,11 @@ def test_log_compress():
     assert result[3] == [3]
 
 
+def test_account_for_distance():
+    """ Know that accounting for distance is a quadratic scaling. So use squares for test
+    :return:
+    """
+    from SignalManipulator import account_for_distance
+
+    signal = [1, 1, 1, 1, 1]
+    assert account_for_distance(signal) == [1, 4, 9, 16, 25]
